@@ -267,6 +267,8 @@ def PathCost(paths,costMatrix):
 
 
 #Funcion para crear una vecindad a partir de una solucion inicial
+#Si parameter es 0, se aplica la creacion de la vecindad completa
+#en caso contrario, se va generando vecino a vecino
 def CreateNeighborhood(paths,deliveryUsed,pickUpUsed):
 
 	#lista para ir creando la vecindad
@@ -300,6 +302,7 @@ def CreateNeighborhood(paths,deliveryUsed,pickUpUsed):
 					neighbor[index]  = permutedPath #El camino que ando permutando es el que se cambia en la posicion index
 					neighbors.append(neighbor)
 
+
 		#Despues de haber permutado los delivery, emepzamos a ver
 		#las posibles permutaciones de los pick up para expandir
 		#la vecindad
@@ -329,7 +332,73 @@ def CreateNeighborhood(paths,deliveryUsed,pickUpUsed):
 	return neighbors
 
 
-#def localSearch(sol):
+def GetNeighbor(paths,deliveryUsed,pickUpUsed):
+
+	#La variable index denota el camino de la ruta completa
+	#que vamos a agarrar para permutar
+	index = 0
+	for path in paths:
+
+		#Revisamos si existen mas de 2 nodos de tipo delivery
+		#en la ruta para permutar dicho camino
+		if deliveryUsed[index] > 1:
+
+			stop = deliveryUsed[index]
+			'''se sabe que la posicion 0 siempre es el origen, asi que los delivery
+			siempre iran a partir de la posicion 1 hasta efectivamente la posicion
+			que dictamine el tamano de lista de deliverys usados para ese camino
+			ejemplo: [0,d,d,d,d,d,d,p,p,p,0] hay 6 delivery por lo que se recorre
+			de la posicion 1 hasta la posicion 6-1 = 5 ya que el ultimo elemento
+			no permuta con los siguientes por ser pick ups'''
+			for i in range(1,stop):
+
+				for j in range(i+1,stop+1):
+
+					permutedPath  = copy.deepcopy(path)
+					neighbor = copy.deepcopy(paths) #Mi vecino sera igual a mi path actual pero con una permutacion
+					temporal = permutedPath[i]
+					permutedPath[i]  = permutedPath[j]
+					permutedPath[j]  = temporal
+					neighbor[index]  = permutedPath #El camino que ando permutando es el que se cambia en la posicion index
+					yield neighbor
+
+		#Despues de haber permutado los delivery, emepzamos a ver
+		#las posibles permutaciones de los pick up para expandir
+		#la vecindad
+		if pickUpUsed[index] > 1:
+
+			stop2 = pickUpUsed[index]
+			'''Los pickUp empiezan justamente despues de los delivery, por lo que el
+			inicio para las permutaciones empieza a partir de la posicion donde 
+			terminan los delivery + 1, al ser la ultima posicion 0 nuevamente, por
+			ser el retorno al deposito, nos bastara evaluar en los 2 casos hasta la 
+			longitud de los pickUp -1'''
+			for i in range(stop + 1,stop + 1 + stop2):
+
+				for j in range (i+1,stop + 1 + stop2):
+
+					permutedPath  = copy.deepcopy(path)
+					neighbor = copy.deepcopy(paths)
+					permutedPath[i], permutedPath[j]  = permutedPath[j], permutedPath[i]
+					neighbor[index]  = permutedPath
+					yield neighbor
+
+		index += 1
+
+def GetBestFirst(paths,deliveryUsed,pickupUsed,costMatrix):
+
+	best_sol = PathCost(paths,costMatrix)
+	best_candidate = paths
+	neighbor_generator = GetNeighbor(paths,deliveryUsed,pickupUsed)
+	for neighbor in neighbor_generator:
+		new_sol = PathCost(neighbor,costMatrix)
+		if new_sol < best_sol:
+			best_candidate = neighbor
+			best_sol = new_sol
+			break
+
+	return best_candidate,best_sol
+
 
 
 
@@ -355,6 +424,9 @@ def main():
 
 	##NOTA, DELIVERYUSED Y PICK UP USED SE USARA PARA PERMUTAR LAS NUEVAS SOLUCIONES
 	#SERAN LOS INDICES PARA SABER DE DONDE A DONDE ME PUEDO MOVER EN LAS LISTAS NUEVAS
+
+	canditdate,cost = GetBestFirst(firstSol,deliveryUsed,pickupUsed,costMatrix)
+	print(cost)
 
 
 
