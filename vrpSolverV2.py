@@ -269,7 +269,6 @@ def PathCost(paths,costMatrix):
 #Funcion para crear una vecindad a partir de una solucion inicial
 def CreateNeighborhood(paths,deliveryUsed,pickUpUsed):
 
-
 	#lista para ir creando la vecindad
 	neighbors = []
 
@@ -330,12 +329,18 @@ def CreateNeighborhood(paths,deliveryUsed,pickUpUsed):
 	return neighbors
 
 
+#def localSearch(sol):
+
+
+
 def main():
 
 	instance = input("Instancia: ")
-	firstSol,deliveryUsed,pickUpUsed,costMatrix = GetVrpb("dataset/"+instance+".xml")
+
+
+	firstSol,deliveryUsed,pickupUsed,costMatrix = GetVrpb("dataset/"+instance+".xml")
 	print("Calculando vecinos")
-	neighbors = CreateNeighborhood(firstSol,deliveryUsed,pickUpUsed)
+	neighbors = CreateNeighborhood(firstSol,deliveryUsed,pickupUsed)
 	print("termino el calculo")
 	print("\ntotal de vecinos generados: %s\n" % len(neighbors))
 
