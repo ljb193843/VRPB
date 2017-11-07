@@ -1,0 +1,310 @@
+Instancia ga1:
+a - Solucion Inicial:      381690.48095126206, tiempo de ejecucion: 0.013991880461255485 segs
+b - Busqueda Primer mejor: 374213.83661365317, tiempo de ejecucion: 0.0006773719396665975 segs
+c - Metaheuristica Tabu:   331050.4107839152, tiempo de ejecucion: 0.033011841960826654 segs
+
+Instancia ga2:
+a - Solucion Inicial:      398225.87490590266, tiempo de ejecucion: 0.01214762603000249 segs
+b - Busqueda Primer mejor: 398008.5041144595, tiempo de ejecucion: 0.001227123079106154 segs
+c - Metaheuristica Tabu:   300534.0966110851, tiempo de ejecucion: 0.07595757991694832 segs
+
+Instancia ga3:
+a - Solucion Inicial:      362595.5492973399, tiempo de ejecucion: 0.012068643926365476 segs
+b - Busqueda Primer mejor: 358867.4159844152, tiempo de ejecucion: 0.0029584821870813835 segs
+c - Metaheuristica Tabu:   264685.4980190011, tiempo de ejecucion: 0.13666893647250752 segs
+
+Instancia ga4:
+a - Solucion Inicial:      362595.5492973399, tiempo de ejecucion: 0.01192362028974384 segs
+b - Busqueda Primer mejor: 358867.4159844152, tiempo de ejecucion: 0.003049512408222349 segs
+c - Metaheuristica Tabu:   264685.4980190011, tiempo de ejecucion: 0.1366310072136988 segs
+
+Instancia gb1:
+a - Solucion Inicial:      495946.23780898825, tiempo de ejecucion: 0.016098516118150087 segs
+b - Busqueda Primer mejor: 472790.2013612748, tiempo de ejecucion: 0.00038420108040378154 segs
+c - Metaheuristica Tabu:   415561.89342942095, tiempo de ejecucion: 0.03980028683444191 segs
+
+Instancia gb2:
+a - Solucion Inicial:      494482.9781533268, tiempo de ejecucion: 0.015391246998010722 segs
+b - Busqueda Primer mejor: 494028.53828052245, tiempo de ejecucion: 0.001041939050804682 segs
+c - Metaheuristica Tabu:   329081.68961118336, tiempo de ejecucion: 0.12249678047526699 segs
+
+Instancia gb3:
+a - Solucion Inicial:      469159.203092365, tiempo de ejecucion: 0.014515304232816037 segs
+b - Busqueda Primer mejor: 467405.64589830744, tiempo de ejecucion: 0.0024894980575757234 segs
+c - Metaheuristica Tabu:   289053.5693973713, tiempo de ejecucion: 0.20005631379366662 segs
+
+Instancia gc1:
+a - Solucion Inicial:      658030.6836227867, tiempo de ejecucion: 0.0260984536464297 segs
+b - Busqueda Primer mejor: 639918.3058892895, tiempo de ejecucion: 0.0008746040854720229 segs
+c - Metaheuristica Tabu:   520666.8111139038, tiempo de ejecucion: 0.14562559627025978 segs
+
+Instancia gc2:
+a - Solucion Inicial:      606933.8071372213, tiempo de ejecucion: 0.025746827105944007 segs
+b - Busqueda Primer mejor: 601233.4516149807, tiempo de ejecucion: 0.0012922721589423355 segs
+c - Metaheuristica Tabu:   440109.1157642905, tiempo de ejecucion: 0.2558649789782661 segs
+
+Instancia gc3:
+a - Solucion Inicial:      637562.2448466581, tiempo de ejecucion: 0.024919523037339346 segs
+b - Busqueda Primer mejor: 619449.8671131609, tiempo de ejecucion: 0.003557318249685186 segs
+c - Metaheuristica Tabu:   445952.5344105661, tiempo de ejecucion: 0.3510000383754854 segs
+
+Instancia gc4:
+a - Solucion Inicial:      637562.2448466581, tiempo de ejecucion: 0.024418410594489817 segs
+b - Busqueda Primer mejor: 619449.8671131609, tiempo de ejecucion: 0.0035528559839429832 segs
+c - Metaheuristica Tabu:   445952.5344105661, tiempo de ejecucion: 0.3571106650828598 segs
+
+Instancia gd1:
+a - Solucion Inicial:      692090.9865908137, tiempo de ejecucion: 0.025106491971937702 segs
+b - Busqueda Primer mejor: 654307.2310465364, tiempo de ejecucion: 0.0009201191960425056 segs
+c - Metaheuristica Tabu:   579106.5517283356, tiempo de ejecucion: 0.08870047219696084 segs
+
+Instancia gd2:
+a - Solucion Inicial:      692090.9865908137, tiempo de ejecucion: 0.02513549669926203 segs
+b - Busqueda Primer mejor: 654307.2310465364, tiempo de ejecucion: 0.0009464465639215103 segs
+c - Metaheuristica Tabu:   579106.5517283356, tiempo de ejecucion: 0.08699410177714195 segs
+
+Instancia gd3:
+a - Solucion Inicial:      648327.6410897472, tiempo de ejecucion: 0.0235286348054943 segs
+b - Busqueda Primer mejor: 621483.1497636318, tiempo de ejecucion: 0.0011909787265943009 segs
+c - Metaheuristica Tabu:   435844.34584156063, tiempo de ejecucion: 0.25168249729809805 segs
+
+Instancia gd4:
+a - Solucion Inicial:      630800.709909766, tiempo de ejecucion: 0.023047156331910467 segs
+b - Busqueda Primer mejor: 593016.9543654885, tiempo de ejecucion: 0.0030454963690543686 segs
+c - Metaheuristica Tabu:   415014.5041642845, tiempo de ejecucion: 0.30061614965368355 segs
+
+Instancia ge1:
+a - Solucion Inicial:      633201.1213739532, tiempo de ejecucion: 0.03340362889299219 segs
+b - Busqueda Primer mejor: 632773.9099544137, tiempo de ejecucion: 0.00294152557726101 segs
+c - Metaheuristica Tabu:   486158.1908483804, tiempo de ejecucion: 0.32883194839478913 segs
+
+Instancia ge2:
+a - Solucion Inicial:      634467.3131136602, tiempo de ejecucion: 0.03114661488058531 segs
+b - Busqueda Primer mejor: 625952.326809955, tiempo de ejecucion: 0.0032021218966057363 segs
+c - Metaheuristica Tabu:   430561.774341436, tiempo de ejecucion: 0.4911223223058848 segs
+
+Instancia ge3:
+a - Solucion Inicial:      661739.8684133155, tiempo de ejecucion: 0.0314763763189342 segs
+b - Busqueda Primer mejor: 658139.1486736034, tiempo de ejecucion: 0.006563100453633931 segs
+c - Metaheuristica Tabu:   388782.60655862984, tiempo de ejecucion: 0.7349713120935434 segs
+
+Instancia gf1:
+a - Solucion Inicial:      877437.6404859842, tiempo de ejecucion: 0.05517591590235492 segs
+b - Busqueda Primer mejor: 876471.1033499626, tiempo de ejecucion: 0.0057219633612284465 segs
+c - Metaheuristica Tabu:   658815.2881899882, tiempo de ejecucion: 0.8028718249863678 segs
+
+Instancia gf2:
+a - Solucion Inicial:      877437.6404859842, tiempo de ejecucion: 0.055214737614312094 segs
+b - Busqueda Primer mejor: 876471.1033499626, tiempo de ejecucion: 0.005924103999350297 segs
+c - Metaheuristica Tabu:   658815.2881899882, tiempo de ejecucion: 0.8070029906105004 segs
+
+Instancia gf3:
+a - Solucion Inicial:      900204.764656654, tiempo de ejecucion: 0.05387204185248285 segs
+b - Busqueda Primer mejor: 885827.7867384941, tiempo de ejecucion: 0.00826590106085906 segs
+c - Metaheuristica Tabu:   608357.3815440316, tiempo de ejecucion: 1.3805643338238849 segs
+
+Instancia gf4:
+a - Solucion Inicial:      897426.390494311, tiempo de ejecucion: 0.05343786339576638 segs
+b - Busqueda Primer mejor: 883049.4125761511, tiempo de ejecucion: 0.011675072087903061 segs
+c - Metaheuristica Tabu:   569846.7660382881, tiempo de ejecucion: 1.6920072788478786 segs
+
+Instancia gg1:
+a - Solucion Inicial:      870101.2471623363, tiempo de ejecucion: 0.0541420089298862 segs
+b - Busqueda Primer mejor: 866950.5969599129, tiempo de ejecucion: 0.0024506763456185465 segs
+c - Metaheuristica Tabu:   634681.1880187897, tiempo de ejecucion: 0.6924343176794076 segs
+
+Instancia gg2:
+a - Solucion Inicial:      850144.3699908532, tiempo de ejecucion: 0.05164760237999406 segs
+b - Busqueda Primer mejor: 840284.9686601417, tiempo de ejecucion: 0.0051713197686404505 segs
+c - Metaheuristica Tabu:   558923.6658497355, tiempo de ejecucion: 1.1088342152257862 segs
+
+Instancia gg3:
+a - Solucion Inicial:      840409.3758739406, tiempo de ejecucion: 0.0510956201076834 segs
+b - Busqueda Primer mejor: 827118.368714842, tiempo de ejecucion: 0.007653678201028642 segs
+c - Metaheuristica Tabu:   457660.2485025167, tiempo de ejecucion: 1.5958583926740306 segs
+
+Instancia gg4:
+a - Solucion Inicial:      840409.3758739406, tiempo de ejecucion: 0.05181181375930717 segs
+b - Busqueda Primer mejor: 827118.368714842, tiempo de ejecucion: 0.007755417859950903 segs
+c - Metaheuristica Tabu:   457660.2485025167, tiempo de ejecucion: 1.5798290416748848 segs
+
+Instancia gg5:
+a - Solucion Inicial:      853563.9608534346, tiempo de ejecucion: 0.051213870149851806 segs
+b - Busqueda Primer mejor: 850413.3106510114, tiempo de ejecucion: 0.00958762417369994 segs
+c - Metaheuristica Tabu:   462734.1285740743, tiempo de ejecucion: 1.545568211532815 segs
+
+Instancia gg6:
+a - Solucion Inicial:      864824.0658511082, tiempo de ejecucion: 0.05963818164455911 segs
+b - Busqueda Primer mejor: 851249.7137238942, tiempo de ejecucion: 0.01412485598037317 segs
+c - Metaheuristica Tabu:   429008.6646458247, tiempo de ejecucion: 2.132282975474495 segs
+
+Instancia gh1:
+a - Solucion Inicial:      1016907.438432694, tiempo de ejecucion: 0.07984644451127927 segs
+b - Busqueda Primer mejor: 980659.3957677694, tiempo de ejecucion: 0.007089647811214031 segs
+c - Metaheuristica Tabu:   624394.2963429978, tiempo de ejecucion: 1.742120754265703 segs
+
+Instancia gh2:
+a - Solucion Inicial:      1018838.1036103267, tiempo de ejecucion: 0.0791302508596555 segs
+b - Busqueda Primer mejor: 989738.2236079174, tiempo de ejecucion: 0.012110589224342189 segs
+c - Metaheuristica Tabu:   562753.0281137669, tiempo de ejecucion: 2.1123478032711978 segs
+
+Instancia gh3:
+a - Solucion Inicial:      999169.6620862627, tiempo de ejecucion: 0.07738059646213723 segs
+b - Busqueda Primer mejor: 952519.0025845363, tiempo de ejecucion: 0.018271193308029315 segs
+c - Metaheuristica Tabu:   502174.2590262224, tiempo de ejecucion: 3.0801302446124836 segs
+
+Instancia gh4:
+a - Solucion Inicial:      999169.6620862627, tiempo de ejecucion: 0.07822931940630447 segs
+b - Busqueda Primer mejor: 952519.0025845363, tiempo de ejecucion: 0.01824308103385343 segs
+c - Metaheuristica Tabu:   502174.2590262224, tiempo de ejecucion: 3.0697693097856598 segs
+
+Instancia gh5:
+a - Solucion Inicial:      979952.9537985089, tiempo de ejecucion: 0.07531189006405137 segs
+b - Busqueda Primer mejor: 958862.4828157261, tiempo de ejecucion: 0.02584544317884671 segs
+c - Metaheuristica Tabu:   477508.48667512904, tiempo de ejecucion: 3.594514804459053 segs
+
+Instancia gh6:
+a - Solucion Inicial:      979952.9537985089, tiempo de ejecucion: 0.07640916121005938 segs
+b - Busqueda Primer mejor: 958862.4828157261, tiempo de ejecucion: 0.026243031056477115 segs
+c - Metaheuristica Tabu:   477508.48667512904, tiempo de ejecucion: 3.613095679009591 segs
+
+Instancia gi1:
+a - Solucion Inicial:      1311129.6650948278, tiempo de ejecucion: 0.15800704502515378 segs
+b - Busqueda Primer mejor: 1303239.30359446, tiempo de ejecucion: 0.0038130060767135043 segs
+c - Metaheuristica Tabu:   904499.9266996114, tiempo de ejecucion: 3.0716862991485105 segs
+
+Instancia gi2:
+a - Solucion Inicial:      1341666.421208359, tiempo de ejecucion: 0.16628856401611056 segs
+b - Busqueda Primer mejor: 1333776.0597079913, tiempo de ejecucion: 0.005206125441429649 segs
+c - Metaheuristica Tabu:   883193.7494800215, tiempo de ejecucion: 3.2864350691249586 segs
+
+Instancia gi3:
+a - Solucion Inicial:      1250991.8037754751, tiempo de ejecucion: 0.13791301616143406 segs
+b - Busqueda Primer mejor: 1243101.4422751074, tiempo de ejecucion: 0.010323898021163652 segs
+c - Metaheuristica Tabu:   776649.4581722273, tiempo de ejecucion: 5.3110225995910785 segs
+
+Instancia gi4:
+a - Solucion Inicial:      1250991.8037754751, tiempo de ejecucion: 0.14001474332601224 segs
+b - Busqueda Primer mejor: 1243101.4422751074, tiempo de ejecucion: 0.010454196180836012 segs
+c - Metaheuristica Tabu:   776649.4581722273, tiempo de ejecucion: 5.279505170427315 segs
+
+Instancia gi5:
+a - Solucion Inicial:      1250991.8037754751, tiempo de ejecucion: 0.13872559475308946 segs
+b - Busqueda Primer mejor: 1243101.4422751074, tiempo de ejecucion: 0.010228851760854668 segs
+c - Metaheuristica Tabu:   776649.4581722273, tiempo de ejecucion: 5.25284357884422 segs
+
+Instancia gj1:
+a - Solucion Inicial:      1329190.7299303485, tiempo de ejecucion: 0.17804975783283816 segs
+b - Busqueda Primer mejor: 1325476.4351595943, tiempo de ejecucion: 0.006697860879048501 segs
+c - Metaheuristica Tabu:   822570.7751253108, tiempo de ejecucion: 4.349715798294879 segs
+
+Instancia gj2:
+a - Solucion Inicial:      1367604.1931154956, tiempo de ejecucion: 0.17199401699409286 segs
+b - Busqueda Primer mejor: 1366903.0155653087, tiempo de ejecucion: 0.014412672120745318 segs
+c - Metaheuristica Tabu:   746867.8873745943, tiempo de ejecucion: 5.724219929014276 segs
+
+Instancia gj3:
+a - Solucion Inicial:      1343356.8862190694, tiempo de ejecucion: 0.1696325859633184 segs
+b - Busqueda Primer mejor: 1330360.50292044, tiempo de ejecucion: 0.025218941068641254 segs
+c - Metaheuristica Tabu:   669431.4191041512, tiempo de ejecucion: 8.790937495258841 segs
+
+Instancia gj4:
+a - Solucion Inicial:      1309506.1817891377, tiempo de ejecucion: 0.19316479058140645 segs
+b - Busqueda Primer mejor: 1297487.0236676831, tiempo de ejecucion: 0.016556344583300242 segs
+c - Metaheuristica Tabu:   722409.5558039452, tiempo de ejecucion: 7.655988316003381 segs
+
+Instancia gk1:
+a - Solucion Inicial:      1671175.5090337698, tiempo de ejecucion: 0.29425563606474564 segs
+b - Busqueda Primer mejor: 1668894.4170569798, tiempo de ejecucion: 0.01330915380269826 segs
+c - Metaheuristica Tabu:   1046436.8354014546, tiempo de ejecucion: 6.102310382710684 segs
+
+Instancia gk2:
+a - Solucion Inicial:      1613353.8657345506, tiempo de ejecucion: 0.2823065808602713 segs
+b - Busqueda Primer mejor: 1611072.7737577609, tiempo de ejecucion: 0.01579195846166065 segs
+c - Metaheuristica Tabu:   912871.9970992369, tiempo de ejecucion: 8.869858465855188 segs
+
+Instancia gk3:
+a - Solucion Inicial:      1613353.8657345506, tiempo de ejecucion: 0.2991583274357054 segs
+b - Busqueda Primer mejor: 1611072.7737577609, tiempo de ejecucion: 0.0176750346048708 segs
+c - Metaheuristica Tabu:   912871.9970992369, tiempo de ejecucion: 8.730716095481776 segs
+
+Instancia gk4:
+a - Solucion Inicial:      1625094.9897595495, tiempo de ejecucion: 0.28489781857676927 segs
+b - Busqueda Primer mejor: 1614242.8103399249, tiempo de ejecucion: 0.018549638690342873 segs
+c - Metaheuristica Tabu:   911151.6119612032, tiempo de ejecucion: 11.814019011036969 segs
+
+Instancia gl1:
+a - Solucion Inicial:      2249297.076662985, tiempo de ejecucion: 0.6519196220996388 segs
+b - Busqueda Primer mejor: 2235283.0202685543, tiempo de ejecucion: 0.009753174232735695 segs
+c - Metaheuristica Tabu:   1327110.8767754792, tiempo de ejecucion: 14.337403960885563 segs
+
+Instancia gl2:
+a - Solucion Inicial:      2207020.084429863, tiempo de ejecucion: 0.6151813420174974 segs
+b - Busqueda Primer mejor: 2204958.0758459456, tiempo de ejecucion: 0.00870186442387244 segs
+c - Metaheuristica Tabu:   1268543.977113787, tiempo de ejecucion: 19.979372730380085 segs
+
+Instancia gl3:
+a - Solucion Inicial:      2207020.084429863, tiempo de ejecucion: 0.6463056455693716 segs
+b - Busqueda Primer mejor: 2204958.0758459456, tiempo de ejecucion: 0.009100790981225515 segs
+c - Metaheuristica Tabu:   1268543.977113787, tiempo de ejecucion: 20.21503970970284 segs
+
+Instancia gl4:
+a - Solucion Inicial:      2173324.0084142126, tiempo de ejecucion: 0.6083603226039641 segs
+b - Busqueda Primer mejor: 2171453.4399749874, tiempo de ejecucion: 0.01650815211328438 segs
+c - Metaheuristica Tabu:   1172674.78964375, tiempo de ejecucion: 23.884172968129604 segs
+
+Instancia gl5:
+a - Solucion Inicial:      2173324.0084142126, tiempo de ejecucion: 0.6127507458677188 segs
+b - Busqueda Primer mejor: 2171453.4399749874, tiempo de ejecucion: 0.0167464371039181 segs
+c - Metaheuristica Tabu:   1172674.78964375, tiempo de ejecucion: 23.739005200324495 segs
+
+Instancia gm1:
+a - Solucion Inicial:      1820821.5014861585, tiempo de ejecucion: 0.37823101506728646 segs
+b - Busqueda Primer mejor: 1820704.9246388613, tiempo de ejecucion: 0.01522435825925228 segs
+c - Metaheuristica Tabu:   1057927.5601370172, tiempo de ejecucion: 11.51297403764546 segs
+
+Instancia gm2:
+a - Solucion Inicial:      1820821.5014861585, tiempo de ejecucion: 0.3754287121811823 segs
+b - Busqueda Primer mejor: 1820704.9246388613, tiempo de ejecucion: 0.014783040177348272 segs
+c - Metaheuristica Tabu:   1057927.5601370172, tiempo de ejecucion: 11.449072607310796 segs
+
+Instancia gm3:
+a - Solucion Inicial:      1692761.2368159485, tiempo de ejecucion: 0.36778931323052866 segs
+b - Busqueda Primer mejor: 1692644.6599686514, tiempo de ejecucion: 0.017255135398529464 segs
+c - Metaheuristica Tabu:   961803.0265494894, tiempo de ejecucion: 14.273287449342128 segs
+
+Instancia gm4:
+a - Solucion Inicial:      1776621.9493052042, tiempo de ejecucion: 0.36689953744153314 segs
+b - Busqueda Primer mejor: 1759466.6293292819, tiempo de ejecucion: 0.027420176759270554 segs
+c - Metaheuristica Tabu:   958138.9805071137, tiempo de ejecucion: 20.571852295434123 segs
+
+Instancia gn1:
+a - Solucion Inicial:      2202252.9133716105, tiempo de ejecucion: 0.6174637909446349 segs
+b - Busqueda Primer mejor: 2197120.622253728, tiempo de ejecucion: 0.020049406206297693 segs
+c - Metaheuristica Tabu:   1229601.019874374, tiempo de ejecucion: 21.51455501839792 segs
+
+Instancia gn2:
+a - Solucion Inicial:      2202252.9133716105, tiempo de ejecucion: 0.6155356459174284 segs
+b - Busqueda Primer mejor: 2197120.622253728, tiempo de ejecucion: 0.019598717366335117 segs
+c - Metaheuristica Tabu:   1229601.019874374, tiempo de ejecucion: 21.726974931883515 segs
+
+Instancia gn3:
+a - Solucion Inicial:      2215912.6685274323, tiempo de ejecucion: 0.6131353931746968 segs
+b - Busqueda Primer mejor: 2192700.444122192, tiempo de ejecucion: 0.02743802582223942 segs
+c - Metaheuristica Tabu:   1101790.8409884342, tiempo de ejecucion: 30.43229671925298 segs
+
+Instancia gn4:
+a - Solucion Inicial:      2215912.6685274323, tiempo de ejecucion: 0.616757414277644 segs
+b - Busqueda Primer mejor: 2192700.444122192, tiempo de ejecucion: 0.027303711623399063 segs
+c - Metaheuristica Tabu:   1101790.8409884342, tiempo de ejecucion: 30.06782911664095 segs
+
+Instancia gn5:
+a - Solucion Inicial:      2118705.833726474, tiempo de ejecucion: 0.6292423875977571 segs
+b - Busqueda Primer mejor: 2108761.594049032, tiempo de ejecucion: 0.05137272681027427 segs
+c - Metaheuristica Tabu:   1027774.7090477959, tiempo de ejecucion: 36.149092330525384 segs
+
+Instancia gn6:
+a - Solucion Inicial:      2118705.833726474, tiempo de ejecucion: 0.612075158834349 segs
+b - Busqueda Primer mejor: 2108761.594049032, tiempo de ejecucion: 0.05062083503271286 segs
+c - Metaheuristica Tabu:   1027774.7090477959, tiempo de ejecucion: 35.37988116093875 segs
+

@@ -1,9 +1,11 @@
 from xml.dom import minidom
 from operator import attrgetter
 from random import randint
+from time import perf_counter as pctime
 import math
 import copy
 import sys
+
 
 class Arch:
 
@@ -279,8 +281,18 @@ def CreateNeighborhood(paths,deliveryUsed,pickUpUsed):
 	#La variable index denota el camino de la ruta completa
 	#que vamos a agarrar para permutar
 	index = 0
+
+	#variable para obtener cuantas permutaciones hay de cada camino
+	path_permutations = []
+
+	#Variable para acceder a las permutaciones de la primera y segunda
+	#ruta de la solucion para hacer el todos contra todos
+	FIRST,SECOND = 0,1
+
 	for path in paths:
 
+		path_permutations.append([])
+		path_permutations[index] = 0
 		#Revisamos si existen mas de 2 nodos de tipo delivery
 		#en la ruta para permutar dicho camino
 		if deliveryUsed[index] > 2:
@@ -302,6 +314,7 @@ def CreateNeighborhood(paths,deliveryUsed,pickUpUsed):
 					permutedPath[i]  = permutedPath[j]
 					permutedPath[j]  = temporal
 					neighbor[index]  = permutedPath #El camino que ando permutando es el que se cambia en la posicion index
+					path_permutations[index] += 1
 					neighbors.append(neighbor)
 
 
@@ -326,10 +339,30 @@ def CreateNeighborhood(paths,deliveryUsed,pickUpUsed):
 					permutedPath[i]  = permutedPath[j]
 					permutedPath[j]  = temporal
 					neighbor[index]  = permutedPath
+					path_permutations[index] += 1
 					neighbors.append(neighbor)
 
 		index += 1
 
+#Si la longitud de los caminos es mayor a 2, generamos una vecindad aun mas amplia
+#hacemos las combinaciones (en caso de poder), de cada permutacion obtenida del
+#primer camino, con todas las permutaciones del segundo camino
+	'''if len(paths) > 2:
+
+		if (path_permutations[FIRST] > 0 and path_permutations[SECOND] > 0):
+
+			for i in range(0,path_permutations[FIRST]):
+
+				#Para cada permutacion del primer camino obtenido, combinala con todas las permutaciones
+				#del segundo camino
+				for j in range(path_permutations[FIRST],path_permutations[FIRST]+path_permutations[SECOND]):
+
+					#Creamos una copia del vecino con la permutacion del primer camino en cuestion
+					neighbor = copy.deepcopy(neighbors[i])
+					#Modificamos el segundo camino del vecino por cada una de las permutaciones
+					#que sufrio el segundo camino original
+					neighbor[SECOND] = copy.deepcopy(neighbors[j][SECOND])
+					neighbors.append(neighbor) '''
 
 	return neighbors
 
@@ -470,19 +503,26 @@ def main():
 	instance = sys.argv[1]
 
 	#Calculamos la solucion inicial y el costo de su camino
+	first_time_begin = pctime()
 	firstSol,deliveryUsed,pickupUsed,costMatrix = GetVrpb("dataset/"+instance+".xml")
 	firstSol_cost = PathCost(firstSol,costMatrix)
+	first_time_end = pctime() - first_time_begin
 
 	#Realizamos busqueda local con primer mejor y encontramos la solucion
+	first_best_time_begin = pctime()
 	firstBest,fisrtBest_cost = GetBest(firstSol,deliveryUsed,pickupUsed,costMatrix,True)
+	first_best_time_end = pctime() - first_best_time_begin
 
 	#Aplicamos metaheuristica de tabu para optimizar aun mas el resultado
+	best_time_begin = pctime()
 	bestSol, bestSol_cost   = TabuSearch(firstSol,deliveryUsed,pickupUsed,costMatrix)
+	best_time_end = pctime() - best_time_begin
 
 	print ("Instancia %s:" % instance)
-	print ("a - Solucion Inicial:      %s" % firstSol_cost)
-	print ("b - Busqueda Primer mejor: %s" % fisrtBest_cost)
-	print ("c - Metaheuristica Tabu:   %s" % bestSol_cost)
+	print ("a - Solucion Inicial:      %s, tiempo de ejecucion: %s segs" % (firstSol_cost,first_time_end))
+	print ("b - Busqueda Primer mejor: %s, tiempo de ejecucion: %s segs" % (fisrtBest_cost,first_best_time_end))
+	print ("c - Metaheuristica Tabu:   %s, tiempo de ejecucion: %s segs" % (bestSol_cost,best_time_end))
+	print()	
 
 
 
