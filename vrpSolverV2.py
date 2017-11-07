@@ -421,6 +421,7 @@ def GetNeighbor(paths,deliveryUsed,pickUpUsed):
 
 		index += 1
 
+
 #funcion para conseguir la mejor solucion de la vecindad
 #en caso de first ser true, se para al conseguir el primer mejor,
 #en caso contrario, realiza una busqueda al 100% de la vecindad 
@@ -498,6 +499,87 @@ def TabuSearch(firstSol,deliveryUsed,pickUpUsed,costMatrix):
 	return best_sol,best_cost
 
 
+class Solution(paths, deliveries, pickups, costs):
+	self.paths = paths
+	self.deliveries = deliveries
+	self.pickups = pickups
+	self.costs = costs
+
+	def path_cost(self, path):
+		distance = 0.0
+		size = len(path)
+		for i in range(0,size-1):
+			distance += self.costs[path[i]][path[i+1]]
+		return distance
+
+	def cost(self):
+		distance = 0.0
+		for path in self.paths:
+			distance += self.path_cost(path)
+		return distance
+
+	def get_neighbor(self):
+		#La variable index denota el camino de la ruta completa
+		#que vamos a agarrar para permutar
+		index = 0
+		for path in self.paths:
+			#Revisamos si existen mas de 2 nodos de tipo delivery
+			#en la ruta para permutar dicho camino
+			if self.deliveries[index] > 1:
+				stop = self.deliveries[index]
+				'''se sabe que la posicion 0 siempre es el origen, asi que los delivery
+				siempre iran a partir de la posicion 1 hasta efectivamente la posicion
+				que dictamine el tamano de lista de deliverys usados para ese camino
+				ejemplo: [0,d,d,d,d,d,d,p,p,p,0] hay 6 delivery por lo que se recorre
+				de la posicion 1 hasta la posicion 6-1 = 5 ya que el ultimo elemento
+				no permuta con los siguientes por ser pick ups'''
+				for i in range(1,stop):
+					for j in range(i+1,stop+1):
+						permutedPath  = copy.deepcopy(path)
+						neighbor = copy.deepcopy(paths) #Mi vecino sera igual a mi path actual pero con una permutacion
+						permutedPath[i], permutedPath[j]  = permutedPath[j], permutedPath[i]
+						yield neighbor
+
+			#Despues de haber permutado los delivery, emepzamos a ver
+			#las posibles permutaciones de los pick up para expandir
+			#la vecindad
+			if self.pickups[index] > 1:
+				stop2 = self.pickups[index]
+				'''Los pickUp empiezan justamente despues de los delivery, por lo que el
+				inicio para las permutaciones empieza a partir de la posicion donde 
+				terminan los delivery + 1, al ser la ultima posicion 0 nuevamente, por
+				ser el retorno al deposito, nos bastara evaluar en los 2 casos hasta la 
+				longitud de los pickUp -1'''
+				for i in range(stop + 1,stop + 1 + stop2):
+					for j in range (i+1,stop + 1 + stop2):
+						permutedPath  = copy.deepcopy(path)
+						neighbor = copy.deepcopy(paths)
+						permutedPath[i], permutedPath[j]  = permutedPath[j], permutedPath[i]
+						neighbor[index]  = permutedPath
+						yield neighbor
+
+			index += 1
+
+
+def firstBest(sol):
+	best_sol = sol.cost()
+	best_candidate = sol
+	neighbor_generator = GetNeighbor(paths,deliveryUsed,pickupUsed)
+	for neighbor in neighbor_generator:
+		new_sol = PathCost(neighbor,costMatrix)
+		if new_sol < best_sol:
+			best_candidate = neighbor
+			best_sol = new_sol
+			break
+
+	return best_candidate,best_sol
+
+
+def localSearch(ini_sol):
+	s = ini_sol
+	s_prime = 
+
+	while
 
 def main():
 	output_file = open(sys.argv[1], 'w')
