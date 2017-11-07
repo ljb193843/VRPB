@@ -1,7 +1,9 @@
 from xml.dom import minidom
 from operator import attrgetter
+from random import randint
 import math
 import copy
+import sys
 
 class Arch:
 
@@ -331,7 +333,8 @@ def CreateNeighborhood(paths,deliveryUsed,pickUpUsed):
 
 	return neighbors
 
-
+#La funcion va generando cada vecino a medida que se va solicitando
+#es un iterador
 def GetNeighbor(paths,deliveryUsed,pickUpUsed):
 
 	#La variable index denota el camino de la ruta completa
@@ -357,9 +360,7 @@ def GetNeighbor(paths,deliveryUsed,pickUpUsed):
 					permutedPath  = copy.deepcopy(path)
 					neighbor = copy.deepcopy(paths) #Mi vecino sera igual a mi path actual pero con una permutacion
 					temporal = permutedPath[i]
-					permutedPath[i]  = permutedPath[j]
-					permutedPath[j]  = temporal
-					neighbor[index]  = permutedPath #El camino que ando permutando es el que se cambia en la posicion index
+					permutedPath[i], permutedPath[j]  = permutedPath[j], permutedPath[i]
 					yield neighbor
 
 		#Despues de haber permutado los delivery, emepzamos a ver
@@ -385,48 +386,103 @@ def GetNeighbor(paths,deliveryUsed,pickUpUsed):
 
 		index += 1
 
-def GetBestFirst(paths,deliveryUsed,pickupUsed,costMatrix):
+#funcion para conseguir la mejor solucion de la vecindad
+#en caso de first ser true, se para al conseguir el primer mejor,
+#en caso contrario, realiza una busqueda al 100% de la vecindad 
+#generada
+def GetBest(paths,deliveryUsed,pickupUsed,costMatrix,first):
 
 	best_sol = PathCost(paths,costMatrix)
 	best_candidate = paths
+	#Creamos el apuntador para la funcion iteradora
 	neighbor_generator = GetNeighbor(paths,deliveryUsed,pickupUsed)
+	#Vamos revisando cada vecino hasta obtener ya sea el primer mejor
+	#o un analisis completo de la vecindad
 	for neighbor in neighbor_generator:
 		new_sol = PathCost(neighbor,costMatrix)
 		if new_sol < best_sol:
 			best_candidate = neighbor
 			best_sol = new_sol
-			break
+			if first:
+				break
 
 	return best_candidate,best_sol
 
+def TabuSearch(firstSol,deliveryUsed,pickUpUsed,costMatrix):
+
+	MAX_SIZE  = 10 #Variable para definir el maximo tamano de la lista taboo
+	best_sol  = firstSol #Variable para encontrar la mejor solucion posible
+	best_candidate = firstSol #variable para ir guardando los candidatos a mejor solucion
+	best_cost  = PathCost(best_sol,costMatrix) #Variable que almacena el menor costo encontrado
+	tabuList  = [] #lista taboo
+	tabuList.append(best_sol)
+	attempts = 0   #variable para designar cuantos intentos se pueden hacer para actualizar la mejor solucion
+	sentinel = 500 #Variable para designar el maximo numero de iteraciones a realizar antes de salir del ciclo
+
+	while(attempts <= 12 and sentinel > 0):
+
+
+		#Para cada nuevo mejor candidato que vamos obteniendo, generamos su vecindad
+		neighbors = CreateNeighborhood(best_candidate,deliveryUsed,pickUpUsed)
+		index = randint(0,len(neighbors)-1)
+		best_candidate = neighbors[index]#Elegimos un vecino aleatorio de la nueva vecindad para partir y decir
+		                                 #que sera el mejor candidato para sustituir la solucion final
+		candidate_cost = PathCost(best_candidate,costMatrix)
+
+		#Para cada vecino en la vecindad
+		for neighbor in neighbors:
+
+			neighbor_cost = PathCost(neighbor,costMatrix)
+
+			#Si el nuevo vecino es un mejor candidato
+			if not(neighbor in tabuList) and neighbor_cost < candidate_cost:
+
+				best_candidate = neighbor
+				candidate_cost = neighbor_cost
+
+			#Verificamos si el nuevo candidato es el mas prometedor para ser solucion final
+			if candidate_cost < best_cost:
+
+				best_cost = candidate_cost
+				best_sol  = best_candidate
+				#En caso de haber encontrado una solucion aun mejor,
+				#reiniciamos el numero de intentos antes de rendirnos
+				attempts = 0
+
+			tabuList.append(best_candidate)
+
+			if len(tabuList) > MAX_SIZE:
+				tabuList.pop(0)
+
+		#Aumentamos el # de intentos que hemos hecho para tratar de mejorar la solucion
+		attempts += 1
+		#
+		sentinel -= 1
+
+	#Devolvemos una tupla con el mejor camino encontrado y su valor
+	return best_sol,best_cost
 
 
 
 def main():
 
-	instance = input("Instancia: ")
+	#Obtenemos el archivo a evaluar mediante argumento por consola
+	instance = sys.argv[1]
 
-
+	#Calculamos la solucion inicial y el costo de su camino
 	firstSol,deliveryUsed,pickupUsed,costMatrix = GetVrpb("dataset/"+instance+".xml")
-	print("Calculando vecinos")
-	neighbors = CreateNeighborhood(firstSol,deliveryUsed,pickupUsed)
-	print("termino el calculo")
-	print("\ntotal de vecinos generados: %s\n" % len(neighbors))
+	firstSol_cost = PathCost(firstSol,costMatrix)
 
-	index = 1
-	for path in firstSol:
-		print("Ruta No: %s" % index)
-		print(path)
-		index += 1
+	#Realizamos busqueda local con primer mejor y encontramos la solucion
+	firstBest,fisrtBest_cost = GetBest(firstSol,deliveryUsed,pickupUsed,costMatrix,True)
 
-	print("Valor del camino: %s metros" % PathCost(firstSol,costMatrix))
-		
+	#Aplicamos metaheuristica de tabu para optimizar aun mas el resultado
+	bestSol, bestSol_cost   = TabuSearch(firstSol,deliveryUsed,pickupUsed,costMatrix)
 
-	##NOTA, DELIVERYUSED Y PICK UP USED SE USARA PARA PERMUTAR LAS NUEVAS SOLUCIONES
-	#SERAN LOS INDICES PARA SABER DE DONDE A DONDE ME PUEDO MOVER EN LAS LISTAS NUEVAS
-
-	canditdate,cost = GetBestFirst(firstSol,deliveryUsed,pickupUsed,costMatrix)
-	print(cost)
+	print ("Instancia %s:" % instance)
+	print ("a - Solucion Inicial:      %s" % firstSol_cost)
+	print ("b - Busqueda Primer mejor: %s" % fisrtBest_cost)
+	print ("c - Metaheuristica Tabu:   %s" % bestSol_cost)
 
 
 
