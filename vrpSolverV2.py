@@ -590,7 +590,7 @@ def entrega1():
 def main():
     #output_file = open(sys.argv[1], 'w')
 
-    entrega1()
+    
 
     #output_file.close()
 
