@@ -370,27 +370,6 @@ def CreateNeighborhood(solution):
 
     return neighbors
 
-
-#funcion para conseguir la mejor solucion de la vecindad
-#en caso de first ser true, se para al conseguir el primer mejor,
-#en caso contrario, realiza una busqueda al 100% de la vecindad 
-#generada
-def GetBest(solution,first):
-
-    best_cost = solution.cost()
-    best_candidate = solution
-    #Vamos revisando cada vecino hasta obtener ya sea el primer mejor
-    #o un analisis completo de la vecindad
-    for neighbor in solution.neighbor_generator():
-        new_cost = neighbor.cost()
-        if new_cost < best_cost:
-            best_candidate = neighbor
-            best_cost = new_cost
-            if first:
-                break
-
-    return best_candidate
-
 def TabuSearch(solution):
 
     MAX_SIZE  = 10 #Variable para definir el maximo tamano de la lista taboo
@@ -418,24 +397,24 @@ def TabuSearch(solution):
             neighbor_cost = neighbor.cost()
 
             #Si el nuevo vecino es un mejor candidato
-            if not(neighbor.paths in tabuList) and neighbor_cost < candidate_cost:
+            if not(neighbor.cost() in tabuList) and neighbor_cost < candidate_cost:
 
                 best_candidate = neighbor
                 candidate_cost = neighbor_cost
 
             #Verificamos si el nuevo candidato es el mas prometedor para ser solucion final
-            if candidate_cost < best_cost:
+        if candidate_cost < best_cost:
 
-                best_cost = candidate_cost
-                best_sol  = best_candidate
-                #En caso de haber encontrado una solucion aun mejor,
+            best_cost = candidate_cost
+            best_sol  = best_candidate
+               #En caso de haber encontrado una solucion aun mejor,
                 #reiniciamos el numero de intentos antes de rendirnos
-                attempts = 0
+            attempts = 0
 
-            tabuList.append(best_candidate.paths)
+        tabuList.append(best_candidate.cost())
 
-            if len(tabuList) > MAX_SIZE:
-                tabuList.pop(0)
+        if len(tabuList) > MAX_SIZE:
+            tabuList.pop(0)
 
         #Aumentamos el # de intentos que hemos hecho para tratar de mejorar la solucion
         attempts += 1
@@ -444,7 +423,6 @@ def TabuSearch(solution):
 
     #Devolvemos el mejor encontrado
     return best_sol
-
 
 
 def firstBest(sol, neighborhood):    
@@ -460,15 +438,12 @@ def localSearch(ini_sol, max_it):
     while True:
         previous_cost = sol.cost()
         neighborhood = sol.neighbor_generator()
-        #sol = firstBest(sol, neighborhood)
-        sol = GetBest(sol,True)
-        print(".", end='')
+        sol = firstBest(sol, neighborhood)
 
         if sol.cost() == previous_cost:
             iterations += 1
             if iterations > max_it:
                 break
-    print()
     return sol
 
 
@@ -483,18 +458,21 @@ def entrega1():
 
 
 def main():
-    instance  = "dataset/%s" % sys.argv[1]
-    first_sol = generate_solution(instance)
+    instance  = "dataset/%s.xml" % sys.argv[1]
 
-    print(first_sol)
-    print(GetBest(first_sol,True))
-    print(localSearch(first_sol, 15))
-    print(TabuSearch(first_sol))
-    #output_file = open(sys.argv[1], 'w')
+    firt_time_begin = pctime()
+    first_sol       = generate_solution(instance)
+    first_time_end  = pctime() - firt_time_begin
 
+    tabu_time_begin = pctime()
+    tabu_sol        = TabuSearch(first_sol) 
+    tabu_time_end   = pctime() - tabu_time_begin
+
+    print("Instancia %s:" % instance)
+    print("Distancia Solucion Inicial: %s Timepo de Inicial: %s" % (first_sol.cost(),first_time_end))
+    print("Distancia Solucion Tabu:    %s Tiempo de Tabu:    %s" % (tabu_sol.cost(),tabu_time_end))
     print()
 
-    #output_file.close()
 
 
 
