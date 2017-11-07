@@ -2,9 +2,11 @@ from xml.dom import minidom
 from operator import attrgetter
 from random import randint
 from time import perf_counter as pctime
+
 import math
 import copy
 import sys
+import os
 
 
 class Arch:
@@ -344,9 +346,9 @@ def CreateNeighborhood(paths,deliveryUsed,pickUpUsed):
 
 		index += 1
 
-#Si la longitud de los caminos es mayor a 2, generamos una vecindad aun mas amplia
-#hacemos las combinaciones (en caso de poder), de cada permutacion obtenida del
-#primer camino, con todas las permutaciones del segundo camino
+	#Si la longitud de los caminos es mayor a 2, generamos una vecindad aun mas amplia
+	#hacemos las combinaciones (en caso de poder), de cada permutacion obtenida del
+	#primer camino, con todas las permutaciones del segundo camino
 	'''if len(paths) > 2:
 
 		if (path_permutations[FIRST] > 0 and path_permutations[SECOND] > 0):
@@ -498,31 +500,33 @@ def TabuSearch(firstSol,deliveryUsed,pickUpUsed,costMatrix):
 
 
 def main():
+	output_file = open(sys.argv[1], 'w')
 
 	#Obtenemos el archivo a evaluar mediante argumento por consola
-	instance = sys.argv[1]
+	for instance in os.listdir('dataset'):
 
-	#Calculamos la solucion inicial y el costo de su camino
-	first_time_begin = pctime()
-	firstSol,deliveryUsed,pickupUsed,costMatrix = GetVrpb("dataset/"+instance+".xml")
-	firstSol_cost = PathCost(firstSol,costMatrix)
-	first_time_end = pctime() - first_time_begin
+		#Calculamos la solucion inicial y el costo de su camino
+		first_time_begin = pctime()
+		firstSol,deliveryUsed,pickupUsed,costMatrix = GetVrpb("dataset/"+instance)
+		firstSol_cost = PathCost(firstSol,costMatrix)
+		first_time_end = pctime() - first_time_begin
 
-	#Realizamos busqueda local con primer mejor y encontramos la solucion
-	first_best_time_begin = pctime()
-	firstBest,fisrtBest_cost = GetBest(firstSol,deliveryUsed,pickupUsed,costMatrix,True)
-	first_best_time_end = pctime() - first_best_time_begin
+		#Realizamos busqueda local con primer mejor y encontramos la solucion
+		first_best_time_begin = pctime()
+		firstBest,fisrtBest_cost = GetBest(firstSol,deliveryUsed,pickupUsed,costMatrix,True)
+		first_best_time_end = pctime() - first_best_time_begin
 
-	#Aplicamos metaheuristica de tabu para optimizar aun mas el resultado
-	best_time_begin = pctime()
-	bestSol, bestSol_cost   = TabuSearch(firstSol,deliveryUsed,pickupUsed,costMatrix)
-	best_time_end = pctime() - best_time_begin
+		#Aplicamos metaheuristica de tabu para optimizar aun mas el resultado
+		best_time_begin = pctime()
+		bestSol, bestSol_cost   = TabuSearch(firstSol,deliveryUsed,pickupUsed,costMatrix)
+		best_time_end = pctime() - best_time_begin
 
-	print ("Instancia %s:" % instance)
-	print ("a - Solucion Inicial:      %s, tiempo de ejecucion: %s segs" % (firstSol_cost,first_time_end))
-	print ("b - Busqueda Primer mejor: %s, tiempo de ejecucion: %s segs" % (fisrtBest_cost,first_best_time_end))
-	print ("c - Metaheuristica Tabu:   %s, tiempo de ejecucion: %s segs" % (bestSol_cost,best_time_end))
-	print()	
+		output_file.write("Instancia %s:\n" % instance)
+		output_file.write("a - Solucion Inicial:      %s, tiempo de ejecucion: %s segs\n" % (firstSol_cost,first_time_end))
+		output_file.write("b - Busqueda Primer mejor: %s, tiempo de ejecucion: %s segs\n" % (fisrtBest_cost,first_best_time_end))
+		output_file.write("c - Metaheuristica Tabu:   %s, tiempo de ejecucion: %s segs\n\n" % (bestSol_cost,best_time_end))
+
+	output_file.close()
 
 
 
