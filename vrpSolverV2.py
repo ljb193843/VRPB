@@ -8,6 +8,9 @@ import copy
 import sys
 import os
 
+demand_delivery = []
+vehicule_capacity = 0
+
 
 class Arch:
 
@@ -133,6 +136,9 @@ def GetGraph(entryFile):
 
     nodesList, deliveryNodes, pickUpNodes, vehiculeCapacity  = Parser(entryFile)
 
+    global vehicule_capacity
+    vehicule_capacity = vehiculeCapacity
+
     #Lista para obtener los arcos
     archsList = []
 
@@ -182,6 +188,8 @@ def generate_solution(entryFile):
         #Creamos la lista para cada camino
         paths.append([])
         paths[sett].append(0)
+        global demand_delivery
+        demand_delivery.append([])
 
         #creamos las listas para asignar cuantos nodos de tipo delivery y pickUp son
         #usados en cada camino
@@ -212,6 +220,7 @@ def generate_solution(entryFile):
                 if id1 == 0 and id2 in deliveryNodes and visitedNodes[id2] == 0:
 
                     capacity -= arch.destination.demand
+                    demand_delivery[sett].append(arch.destination.demand)
                     nodeToExpand = arch.destination
                     paths[sett].append(id2)
                     deliveryNodes.remove(id2)
@@ -236,6 +245,7 @@ def generate_solution(entryFile):
                     if (capacity - demand >= 0):
 
                         capacity -= demand
+                        demand_delivery[sett].append(arch.destination.demand)
                         nodeToExpand = arch.destination
                         deliveryNodes.remove(id2)
                         deliveryUsed[sett] +=1
@@ -370,6 +380,8 @@ def CreateNeighborhood(solution):
 
     return neighbors
 
+
+
 def TabuSearch(solution):
 
     MAX_SIZE  = 10 #Variable para definir el maximo tamano de la lista taboo
@@ -428,6 +440,11 @@ def disturbSolution(solution):
 
     index = 0
     disturbed = copy.deepcopy(solution)
+    i1 = randint(0,len(disturbed.paths)-1)
+    i2 = randint(0,len(disturbed.paths)-1)
+    while(i1 == i2):
+        i2 = randint(0,len(disturbed.paths)-1)
+
     for path in disturbed.paths:
         if(disturbed.deliveries[index]>1):
             i1 = randint(1,disturbed.deliveries[index])
@@ -438,6 +455,28 @@ def disturbSolution(solution):
         index +=1
 
     return disturbed
+
+def ILS(solution):
+
+    attempts = 0
+    iterator = 0
+    MAX_ATTEMPT = 20
+    MAX_ITERATION = 400
+    best_sol = localSearch(solution,MAX_ATTEMPT)
+
+    while(attempts < MAX_ATTEMPT and iterator < MAX_ITERATION):
+
+        disturbed = disturbSolution(best_sol)
+        candidate = localSearch(disturbed,MAX_ATTEMPT)
+
+        if (candidate.cost() < best_sol.cost()):
+            best_sol = candidate
+            attempts = 0
+
+        iterator += 1
+        attempts += 1
+
+    return best_sol
 
 
 
@@ -481,9 +520,19 @@ def main():
     first_time_end  = pctime() - firt_time_begin
 
     tabu_time_begin = pctime()
-    tabu_sol        = TabuSearch(first_sol) 
+    #tabu_sol        = TabuSearch(first_sol) 
     tabu_time_end   = pctime() - tabu_time_begin
 
+    #ils_sol = ILS(first_sol)
+
+    print (first_sol)
+    print("DEMANDAS:")
+    for i in demand_delivery:
+        print (i)
+    print (vehicule_capacity)
+    #print(tabu_sol)
+    #print(ils_sol)
+    exit()
     disturbed = disturbSolution(tabu_sol)
 
 
