@@ -424,6 +424,22 @@ def TabuSearch(solution):
     #Devolvemos el mejor encontrado
     return best_sol
 
+def disturbSolution(solution):
+
+    index = 0
+    disturbed = copy.deepcopy(solution)
+    for path in disturbed.paths:
+        if(disturbed.deliveries[index]>1):
+            i1 = randint(1,disturbed.deliveries[index])
+            i2 = randint(1,disturbed.deliveries[index])
+            while(i1 == i2):
+                i2 = randint(1,disturbed.deliveries[index])
+            disturbed.paths[index][i1],disturbed.paths[index][i2] = disturbed.paths[index][i2],disturbed.paths[index][i1]
+        index +=1
+
+    return disturbed
+
+
 
 def firstBest(sol, neighborhood):    
     for neighbor in neighborhood:
@@ -467,6 +483,10 @@ def main():
     tabu_time_begin = pctime()
     tabu_sol        = TabuSearch(first_sol) 
     tabu_time_end   = pctime() - tabu_time_begin
+
+    disturbed = disturbSolution(tabu_sol)
+
+
 
     print("Instancia %s:" % instance)
     print("Distancia Solucion Inicial: %s Timepo de Inicial: %s" % (first_sol.cost(),first_time_end))
