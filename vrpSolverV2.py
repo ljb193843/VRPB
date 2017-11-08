@@ -8,6 +8,72 @@ import copy
 import sys
 import os
 
+soluciones = {
+    'ga1':229884.00,
+    'ga2':180117.00,
+    'ga3':163403.00,
+    'ga4':155795.00,
+    'gb1':239077.00,
+    'gb2':198045.00,
+    'gb3':169368.00,
+    'gc1':250557.00,
+    'gc2':215019.00,
+    'gc3':199344.00,
+    'gc4':195365.00,
+    'gd1':332533.00,
+    'gd2':316711.00,
+    'gd3':239482.00,
+    'gd4':205834.00,
+    'ge1':238880.00,
+    'ge2':212262.00,
+    'ge3':206658.00,
+    'gf1':263175.00,
+    'gf2':265214.00,
+    'gf3':241487.00,
+    'gf4':233861.00,
+    'gg1':307272.00,
+    'gg2':245441.00,
+    'gg3':230170.00,
+    'gg4':232646.00,
+    'gg5':222025.00,
+    'gg6':213457.00,
+    'gh1':270525.00,
+    'gh2':253366.00,
+    'gh3':247449.00,
+    'gh4':250221.00,
+    'gh5':246121.00,
+    'gh6':249136.00,
+    'gi1':356381.00,
+    'gi2':313917.00,
+    'gi3':297318.00,
+    'gi4':295988.00,
+    'gi5':302708.00,
+    'gj1':341984.00,
+    'gj2':316308.00,
+    'gj3':282535.00,
+    'gj4':298184.00,
+    'gk1':407939.00,
+    'gk2':370840.00,
+    'gk3':371322.00,
+    'gk4':359642.00,
+    'gl1':449271.00,
+    'gl2':407445.00,
+    'gl3':413806.00,
+    'gl4':390247.00,
+    'gl5':394576.00,
+    'gm1':407072.00,
+    'gm2':411132.00,
+    'gm3':383448.00,
+    'gm4':356311.00,
+    'gn1':428328.00,
+    'gn2':429521.00,
+    'gn3':412220.00,
+    'gn4':410694.00,
+    'gn5':389349.00,
+    'gn6':384461.00
+}
+
+demand_delivery_0 = []
 demand_delivery = []
 vehicule_capacity = 0
 
@@ -189,6 +255,7 @@ def generate_solution(entryFile):
         paths.append([])
         paths[sett].append(0)
         global demand_delivery
+        global demand_delivery_0
         demand_delivery.append([])
 
         #creamos las listas para asignar cuantos nodos de tipo delivery y pickUp son
@@ -312,6 +379,8 @@ def generate_solution(entryFile):
 
         paths[sett].append(0)
         sett += 1
+
+    demand_delivery_0 = copy.deepcopy(demand_delivery)
 
     return Solution(paths,deliveryUsed,pickUpUsed,costMatrix)
 
@@ -440,19 +509,40 @@ def disturbSolution(solution):
 
     index = 0
     disturbed = copy.deepcopy(solution)
-    i1 = randint(0,len(disturbed.paths)-1)
-    i2 = randint(0,len(disturbed.paths)-1)
-    while(i1 == i2):
-        i2 = randint(0,len(disturbed.paths)-1)
+    valid = False
+    global demand_delivery
+    global vehicule_capacity
 
-    for path in disturbed.paths:
-        if(disturbed.deliveries[index]>1):
-            i1 = randint(1,disturbed.deliveries[index])
-            i2 = randint(1,disturbed.deliveries[index])
-            while(i1 == i2):
-                i2 = randint(1,disturbed.deliveries[index])
-            disturbed.paths[index][i1],disturbed.paths[index][i2] = disturbed.paths[index][i2],disturbed.paths[index][i1]
-        index +=1
+    while not valid:
+        #indices para saber sobre que ruta estamos trabajando
+        i1 = randint(0,len(disturbed.paths)-1)
+        i2 = randint(0,len(disturbed.paths)-1)
+        while(i1 == i2):
+            i2 = randint(0,len(disturbed.paths)-1)
+
+        if(len(demand_delivery[i1]) < 1 or len(demand_delivery[i2]) < 1):
+            continue
+
+        #indices para saber sobre que nodo de la ruta estamos trabajando
+        p1 = randint(1,disturbed.deliveries[i1])
+        p2 = randint(1,disturbed.deliveries[i2])
+        while(i1 == i2):
+            p2 = randint(1,disturbed.deliveries[i2])
+
+        delivs1 = copy.deepcopy(demand_delivery[i1])
+        delivs2 = copy.deepcopy(demand_delivery[i2])
+
+        #asignamos la alteracion en las listas sustitutas para saber si es valido
+        delivs1[p1-1],delivs2[p2-1] = delivs2[p2-1],delivs1[p1-1]
+
+        #si la modificacion es valida, procedemos a intercambiar
+        global vehicule_capacity
+        if (sum(delivs1) <= vehicule_capacity and sum(delivs2) <= vehicule_capacity):
+
+            disturbed.paths[i1][p1],disturbed.paths[i2][p2] = disturbed.paths[i2][p2],disturbed.paths[i1][p1]
+            demand_delivery[i1] = delivs1
+            demand_delivery[i2] = delivs2
+            valid = True
 
     return disturbed
 
@@ -461,7 +551,7 @@ def ILS(solution):
     attempts = 0
     iterator = 0
     MAX_ATTEMPT = 20
-    MAX_ITERATION = 400
+    MAX_ITERATION = 500
     best_sol = localSearch(solution,MAX_ATTEMPT)
 
     while(attempts < MAX_ATTEMPT and iterator < MAX_ITERATION):
@@ -502,45 +592,56 @@ def localSearch(ini_sol, max_it):
     return sol
 
 
-def entrega1():
-    for instance in os.listdir('dataset'):
-        print(instance[:3])
-        ini_sol = generate_solution("dataset/"+instance)
-        s = localSearch(ini_sol, 10)
-        ini_sol.print_cost()
-        s.print_cost()
-        print()
-
-
 def main():
-    instance  = "dataset/%s.xml" % sys.argv[1]
+    instance  = "dataset/%s.xml" % (sys.argv[1])
 
     firt_time_begin = pctime()
     first_sol       = generate_solution(instance)
     first_time_end  = pctime() - firt_time_begin
 
     tabu_time_begin = pctime()
-    #tabu_sol        = TabuSearch(first_sol) 
+    tabu_sol        = TabuSearch(first_sol) 
     tabu_time_end   = pctime() - tabu_time_begin
 
-    #ils_sol = ILS(first_sol)
+    ils_time_begin = pctime()
+    ils_sol = ILS(first_sol)
+    ils_time_end = pctime() - ils_time_begin
 
-    print (first_sol)
-    print("DEMANDAS:")
-    for i in demand_delivery:
-        print (i)
-    print (vehicule_capacity)
-    #print(tabu_sol)
-    #print(ils_sol)
-    exit()
-    disturbed = disturbSolution(tabu_sol)
+    demand_delivery = copy.deepcopy(demand_delivery_0)
+    ils2_time_begin = pctime()
+    ils2_sol = ILS(first_sol)
+    ils2_time_end = pctime() - ils2_time_begin
+
+    demand_delivery = copy.deepcopy(demand_delivery_0)
+    ils3_time_begin = pctime()
+    ils3_sol = ILS(first_sol)
+    ils3_time_end = pctime() - ils3_time_begin
+
+    ils_final_sol = (ils_sol.cost() + ils2_sol.cost() + ils3_sol.cost()) / 3
+
+    ils_final_time = (ils_time_end + ils2_time_end + ils3_time_end) / 3
+
+    iniC = round(first_sol.cost(),2)
+    tabC = round(tabu_sol.cost(),2)
+    tabT = round(tabu_time_end,2)
+    ilsC = round(ils_final_sol,2)
+    ilsT = round(ils_final_time,2)
+    mejC = round(soluciones[sys.argv[1]],2)
+
+    if (sys.argv[1] == "ga1"):
+        print("Inicial - Tabu - Ils Promedio - Optimo conocido - Tiempo Tabu - Tiempo Ils")
+
+    print("%s - %s - %s - %s - %s - %s" % (iniC,tabC,ilsC,mejC,tabT,ilsT)) 
 
 
 
-    print("Instancia %s:" % instance)
+
+
+    '''print("Instancia %s:" % sys.argv[1])
     print("Distancia Solucion Inicial: %s Timepo de Inicial: %s" % (first_sol.cost(),first_time_end))
     print("Distancia Solucion Tabu:    %s Tiempo de Tabu:    %s" % (tabu_sol.cost(),tabu_time_end))
-    print()
+    print("Distancia Solucion ILS :    %s Tiempo de ILS :    %s" % (ils_final_sol,ils_final_time))
+    print()'''
 
 
 
