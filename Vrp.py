@@ -92,6 +92,7 @@ class Solution:
         self.pickDemands = pickDemands #Demanda de los nodos pickup para cada ruta
         self.deliSize = deliSize #Cantidad de nodos de tipo deliverie en la ruta
         self.pickSize = pickSize #Cantidad de nodos de tipo pick up en la ruta
+        self.cost = 0 #Costo de la ruta
 
     #Funcion para obtener el costo de la ruta
     def getCost(self):
@@ -393,7 +394,11 @@ def getFirstSol():
     for i in range(0,vehicules):
         routes[i].append(0)
 
-    return Solution(routes,deliDemands,pickDemands,delisInPath,picksInPath)
+    solution = Solution(routes,deliDemands,pickDemands,delisInPath,picksInPath)
+    cost = round(solution.getCost(),2)
+    solution.cost = cost
+
+    return solution
 
 #Definimos la obtencion del primer mejor en base a un nodo origen
 def getFirstBest(sol):
@@ -444,13 +449,13 @@ def perturbate(sol,genetic):
 
 		if action == 1:
 
-        	#Ubicamos de que ruta vamos a eliminar al nodo
+        	#Ubicamos la primera ruta
 			r1_index = randint(0,vehicules-1)
 			while perturbed.deliSize[r1_index] == 0:
 				r1_index = randint(0,vehicules-1)
 
 			r2_index = r1_index
-        	#	bicamos la ruta en la que se va a agregar el nodo
+        	#	ubicamos la segunda ruta
 			while(r2_index == r1_index):
 				r2_index = randint(0,vehicules-1)
 				#si la segunda ruta no tiene deliveries para intercambiar, seguimos buscando
@@ -503,13 +508,13 @@ def perturbate(sol,genetic):
 				return perturbed
 
 		elif action == 2:
-			#Ubicamos de que ruta vamos a eliminar al nodo
+			#Ubicamos la primera ruta
 			r1_index = randint(0,vehicules-1)
 			while perturbed.pickSize[r1_index] == 0:
 				r1_index = randint(0,vehicules-1)
 
 			r2_index = r1_index
-        	#	bicamos la ruta en la que se va a agregar el nodo
+        	#	ubicamos la segunda ronda
 			while(r2_index == r1_index):
 				r2_index = randint(0,vehicules-1)
 				#si la segunda ruta no tiene deliveries para intercambiar, seguimos buscando
@@ -834,20 +839,24 @@ def crossover(father,mother):
 		pickSize.append(picks)
 
 
-	return Solution(routes,[],[],deliSize,pickSize)
+	descendent = Solution(routes,[],[],deliSize,pickSize)
+	cost = round(descendent.getCost(),2)
+	descendent.cost = cost
+
+	return descendent
 
 def bestInPoblation(pob):
 
 	best = pob[0]
 
 	for habitant in pob:
-		if habitant.getCost() < best.getCost():
+		if habitant.cost < best.cost:
 			best = habitant
 
 	return best 
 
 
-def decendentsPob(poblation):
+def descendentsPob(poblation):
 
 	pob_size = len(poblation)
 	descendents = []
@@ -889,15 +898,23 @@ def geneticAlgor(pob_size):
 	poblation = []
 	tries = 0
 	MAX_TRIES = 100
-	ancest = getFirstSol()
-	poblation.append(ancest)
+	#Generamos la poblacion inicial
 	for i in range(1,pob_size):
-		poblation.append(perturbate(ancest,False))
+		poblation.append(getFirstSol())
 
-	best = bestInPoblation(poblation)
-	print(best.getCost())
+	poblation.sort(key=lambda x: x.cost)
 
-	while True:
+	best = poblation[0]
+
+	descendents = descendentsPob(poblation)
+	descendents.sort(key=lambda x: x.cost)
+
+	print(poblation[0].cost)
+	print(descendents[0].cost)
+
+	return
+
+	'''while True:
 
 		#Creamos la poblacion de descendentes
 		poblation = decendentsPob(poblation)
@@ -913,7 +930,7 @@ def geneticAlgor(pob_size):
 			tries += 1
 			if tries == MAX_TRIES:
 				return best
-		print(tries)
+		print(tries)'''
 
 
 
@@ -924,22 +941,7 @@ def main():
     instance  = "dataset/%s.xml" % (sys.argv[1])
     parser(instance)
     getCostMatrix()
-
-    s0 = getFirstSol()
-    '''print("Solucion Inicial")
-    for route in s0.routes:
-        print("Ruta: %s" % route)
-    print("Costo: %s" % s0.getCost())'''
-
-    best = geneticAlgor(100)
-    print(best.getCost())
-    exit()
-
-    s1 = getSingleArray(getFirstSol())
-    s2 = getSingleArray(getFirstSol())
-
-    crossover(s1,s2)
-
+    geneticAlgor(10)
     '''sils = ILS(s0)
     print("Solucion ILS")
     for route in sils.routes:
