@@ -980,8 +980,9 @@ def geneticAlgor(pob_size):
 
 def main():
 
-	instance  = "dataset/%s.xml" % (sys.argv[1])
-	bestKnown = soluciones[sys.argv[1]]
+	instance    = "dataset/%s.xml" % (sys.argv[1])
+	bestKnown   = soluciones[sys.argv[1]]
+	printOption = int(sys.argv[2])
 	parser(instance)
 	getCostMatrix()
 
@@ -1001,9 +1002,6 @@ def main():
 		ils_time.append(t_end - t_start)
 		error = ((bestKnown - ilSol.getCost())/bestKnown)*100
 		ils_errs.append(abs(round(error,2)))
-		print(ils_sols)
-		print(ils_time)
-		print(ils_errs)
 
 		t_start = time()
 		geSol = geneticAlgor(100)
@@ -1012,9 +1010,62 @@ def main():
 		gen_time.append(t_end - t_start)
 		error = ((bestKnown - geSol.cost)/bestKnown)*100
 		gen_errs.append(abs(round(error,2)))
-		print(gen_sols)
-		print(gen_time)
-		print(gen_errs)
+
+	ils_sols.sort(key=lambda x: x)
+	best_ils = round(ils_sols[0],2)
+
+	prom_tils = 0.0
+	for t in ils_time:
+		prom_tils += t
+	prom_tils = round(prom_tils/len(ils_time),2)
+
+	prom_eils = 0.0
+	for e in ils_errs:
+		prom_eils += e
+	prom_eils  =  round(prom_eils/len(ils_errs),2)
+
+	gen_sols.sort(key=lambda x: x)
+	best_gen = round(gen_sols[0],2)
+
+	prom_tgen = 0.0
+	for t in gen_time:
+		prom_tgen += t
+	prom_tgen = round(prom_tgen/len(gen_time),2)
+
+	prom_egen = 0.0
+	for e in gen_errs:
+		prom_egen += e
+	prom_egen = round(prom_egen/len(gen_errs),2)
+
+	if printOption == 1:
+
+		print("Instancia: %s" % (sys.argv[1]))
+		print()
+		print("Mejor Conocido:  %s" % bestKnown)
+		print()
+		print("Mejor ILS:       %s" % best_ils)
+		print("Tiempo Promedio: %s segs" % prom_tils)
+		print("Error Promedio:  %s " % prom_eils)
+		print()
+		print("Mejor Genetio:   %s" % best_gen)
+		print("Tiempo Promedio: %s segs" % prom_tgen)
+		print("Error Promedio:  %s" % prom_egen)
+
+	elif printOption == 2:
+
+		print("Instancia: %s" % (sys.argv[1]))
+		print()
+		print("Resultados")
+		print()
+		print("Mejor Conocido     Mejor ILS        Tiempo         Error     Mejor GEN        Tiempo         Error")
+		#Espaciacion (14 - 13 - 13 - 13 - 13 - 13 -13)
+		print("%14.1f %13.1f %13.1f %13.1f %13.1f %13.1f %13.1f" % (bestKnown,best_ils,prom_tils,prom_eils,best_gen,prom_tgen,prom_egen))
+
+	else:
+
+		print("%s,%s,%s,%s,%s,%s,%s" % (bestKnown,best_ils,prom_tils,prom_eils,best_gen,prom_tgen,prom_egen))
+
+
 
 
 
