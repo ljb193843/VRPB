@@ -1,7 +1,7 @@
 from xml.dom import minidom
 from operator import attrgetter
 from random import randint,choice
-from time import perf_counter as pctime
+from time import time 
 
 import math
 import copy
@@ -19,68 +19,68 @@ vehicules = 0 #Cantidad de Vehiculos
 
 
 soluciones = {
-    'ga1':229884.00,
-    'ga2':180117.00,
-    'ga3':163403.00,
-    'ga4':155795.00,
-    'gb1':239077.00,
-    'gb2':198045.00,
-    'gb3':169368.00,
-    'gc1':250557.00,
-    'gc2':215019.00,
-    'gc3':199344.00,
-    'gc4':195365.00,
-    'gd1':332533.00,
-    'gd2':316711.00,
-    'gd3':239482.00,
-    'gd4':205834.00,
-    'ge1':238880.00,
-    'ge2':212262.00,
-    'ge3':206658.00,
-    'gf1':263175.00,
-    'gf2':265214.00,
-    'gf3':241487.00,
-    'gf4':233861.00,
-    'gg1':307272.00,
-    'gg2':245441.00,
-    'gg3':230170.00,
-    'gg4':232646.00,
-    'gg5':222025.00,
-    'gg6':213457.00,
-    'gh1':270525.00,
-    'gh2':253366.00,
-    'gh3':247449.00,
-    'gh4':250221.00,
-    'gh5':246121.00,
-    'gh6':249136.00,
-    'gi1':356381.00,
-    'gi2':313917.00,
-    'gi3':297318.00,
-    'gi4':295988.00,
-    'gi5':302708.00,
-    'gj1':341984.00,
-    'gj2':316308.00,
-    'gj3':282535.00,
-    'gj4':298184.00,
-    'gk1':407939.00,
-    'gk2':370840.00,
-    'gk3':371322.00,
-    'gk4':359642.00,
-    'gl1':449271.00,
-    'gl2':407445.00,
-    'gl3':413806.00,
-    'gl4':390247.00,
-    'gl5':394576.00,
-    'gm1':407072.00,
-    'gm2':411132.00,
-    'gm3':383448.00,
-    'gm4':356311.00,
-    'gn1':428328.00,
-    'gn2':429521.00,
-    'gn3':412220.00,
-    'gn4':410694.00,
-    'gn5':389349.00,
-    'gn6':384461.00
+    'GA1':229884.00,
+    'GA2':180117.00,
+    'GA3':163403.00,
+    'GA4':155795.00,
+    'GB1':239077.00,
+    'GB2':198045.00,
+    'GB3':169368.00,
+    'GC1':250557.00,
+    'GC2':215019.00,
+    'GC3':199344.00,
+    'GC4':195365.00,
+    'GD1':332533.00,
+    'GD2':316711.00,
+    'GD3':239482.00,
+    'GD4':205834.00,
+    'GE1':238880.00,
+    'GE2':212262.00,
+    'GE3':206658.00,
+    'GF1':263175.00,
+    'GF2':265214.00,
+    'GF3':241487.00,
+    'GF4':233861.00,
+    'GG1':307272.00,
+    'GG2':245441.00,
+    'GG3':230170.00,
+    'GG4':232646.00,
+    'GG5':222025.00,
+    'GG6':213457.00,
+    'GH1':270525.00,
+    'GH2':253366.00,
+    'GH3':247449.00,
+    'GH4':250221.00,
+    'GH5':246121.00,
+    'GH6':249136.00,
+    'GI1':356381.00,
+    'GI2':313917.00,
+    'GI3':297318.00,
+    'GI4':295988.00,
+    'GI5':302708.00,
+    'GJ1':341984.00,
+    'GJ2':316308.00,
+    'GJ3':282535.00,
+    'GJ4':298184.00,
+    'GK1':407939.00,
+    'GK2':370840.00,
+    'GK3':371322.00,
+    'GK4':359642.00,
+    'GL1':449271.00,
+    'GL2':407445.00,
+    'GL3':413806.00,
+    'GL4':390247.00,
+    'GL5':394576.00,
+    'GM1':407072.00,
+    'GM2':411132.00,
+    'GM3':383448.00,
+    'GM4':356311.00,
+    'GN1':428328.00,
+    'GN2':429521.00,
+    'GN3':412220.00,
+    'GN4':410694.00,
+    'GN5':389349.00,
+    'GN6':384461.00
 }
 
 #Clase para albergar una solucion obtenida
@@ -430,7 +430,7 @@ def localSearch(sol,max_tries):
 
     return bestSol
 
-def perturbate(sol,genetic):
+def perturbate(sol):
 
 	global demandList
 	global vehicules
@@ -478,14 +478,6 @@ def perturbate(sol,genetic):
 			head2 = perturbed.routes[r2_index][0:p2_beg]
 			subr2 = perturbed.routes[r2_index][p2_beg:p2_end+1]
 			tail2 = perturbed.routes[r2_index][p2_end+1:]
-
-			#OPCION PARA LA MUTACION DE LAS POBLACIONES EN EL ALGORITMO GENETICO
-			if genetic:
-
-				perturbed.routes[r1_index],perturbed.routes[r2_index] = head1+subr2+tail1,head2+subr1+tail2
-				perturbed.deliSize[r1_index] = perturbed.deliSize[r1_index] - len(subr1) + len(subr2)
-				perturbed.deliSize[r2_index] = perturbed.deliSize[r2_index] - len(subr2) + len(subr1)
-				return perturbed
 
 			#Calculamos la demanda que requiere el pedazo de la ruta 1 que desemos intercambiar
 			subdemand1 = 0
@@ -545,16 +537,6 @@ def perturbate(sol,genetic):
 			subr2 = perturbed.routes[r2_index][p2_beg:p2_end+1]
 			tail2 = perturbed.routes[r2_index][p2_end+1:]
 
-
-			#OPCION PARA LA MUTACION DE LA POBLACION EN EL ALGORITMO GENETICO
-			if genetic:
-
-				perturbed.routes[r1_index],perturbed.routes[r2_index] = head1+subr2+tail1,head2+subr1+tail2
-				perturbed.pickSize[r1_index] = perturbed.pickSize[r1_index] - len(subr1) + len(subr2)
-				perturbed.pickSize[r2_index] = perturbed.pickSize[r2_index] - len(subr2) + len(subr1)
-				return perturbed
-
-
 			#Calculamos la demanda que requiere el pedazo de la ruta 1 que desemos intercambiar
 			subdemand1 = 0
 			for node in subr1:
@@ -579,24 +561,23 @@ def perturbate(sol,genetic):
 			pass
 
 #Metaheuristica de busqueda local iterada
-def ILS(sol):
+def ILS():
 
-    tries = 0
-    MAX_TRIES = 6
+	tries = 0
+	MAX_TRIES = 6
+	sol = getFirstSol()
+	bestSol = localSearch(sol,MAX_TRIES)
 
-    bestSol = localSearch(sol,MAX_TRIES)
-
-    while True:
-        candidate = perturbate(bestSol,False)
-        candidate = localSearch(candidate,15)
-        if(candidate.getCost() < bestSol.getCost()):
-            bestSol = candidate
-            print(bestSol.getCost())
-            tries = 0
-        print(tries)
-        tries += 1
-        if (tries == MAX_TRIES):
-            return bestSol
+	while True:
+		candidate = perturbate(bestSol)
+		candidate = localSearch(candidate,15)
+		if(candidate.getCost() < bestSol.getCost()):
+			bestSol = candidate
+			tries = 0
+		else:
+			tries +=1
+			if (tries == MAX_TRIES):
+				return bestSol
 
 #Funcion para transformar un conjunto de rutas en una ruta generalizada
 def getSingleArray(sol):
@@ -845,16 +826,6 @@ def crossover(father,mother):
 
 	return descendent
 
-def bestInPoblation(pob):
-
-	best = pob[0]
-
-	for habitant in pob:
-		if habitant.cost < best.cost:
-			best = habitant
-
-	return best 
-
 
 def descendentsPob(poblation):
 
@@ -879,17 +850,84 @@ def descendentsPob(poblation):
 #Funcion para generar la mutacion en una poblacion
 def mutate(poblation):
 
+	global vehicules
+
 	mutated = copy.deepcopy(poblation)
 	pob_size = len(poblation)
 
-	for i in range(0,pob_size):
+	i = 0
+	for chromo in mutated:
 
-		mutated[i] = getFirstBest(mutated[i])
-		mutated[i] = perturbate(mutated[i],True)
+		#decidimos si se debe o no mutar el chromosoma
+		action = randint(1,2)
 
-	print("mutacion exitosa")
+		#Es posible aplicar la mutacion
+		if action == 1:
+
+			r1_index = randint(0,vehicules-1)
+			#Caso en el caso que se generan soluciones con alguna ruta vacia
+			while not(chromo.routes[r1_index]) or len(chromo.routes[r1_index]) <= 2:
+				r1_index = randint(0,vehicules-1)
+
+			r2_index = randint(0,vehicules-1)
+			#Caso en el caso que se generan soluciones con alguna ruta vacia
+			while(r1_index == r2_index or len(chromo.routes[r2_index]) <= 2 ):
+				r2_index = randint(0,vehicules-1)
+
+
+			#Calculamos el inicio y el final de cada subruta que vamos a intercambiar en ambos caminos
+			beg_1 = randint(1,len(chromo.routes[r1_index])-2)
+			end_1 = randint(1,len(chromo.routes[r1_index])-2)
+
+			if beg_1 > end_1:
+				end_1,beg_1 = beg_1,end_1
+
+			beg_2 = randint(1,len(chromo.routes[r2_index])-2)
+			end_2 = randint(1,len(chromo.routes[r2_index])-2)
+
+			if beg_2 > end_2:
+				end_2,beg_2 = beg_2,end_2
+
+			head1 = chromo.routes[r1_index][0:beg_1]
+			midd1 = chromo.routes[r1_index][beg_1:end_1+1]
+			tail1 = chromo.routes[r1_index][end_1+1:]
+
+			head2 = chromo.routes[r2_index][0:beg_2]
+			midd2 = chromo.routes[r2_index][beg_2:end_2+1]
+			tail2 = chromo.routes[r2_index][end_2+1:]
+
+			chromo.routes[r1_index] = head1+midd2+tail1
+			chromo.routes[r2_index] = head2+midd1+tail2
+
+			chromo.routes[r1_index],chromo.deliSize[r1_index],chromo.pickSize[r1_index] = reorderRoute(chromo.routes[r1_index])
+			chromo.routes[r2_index],chromo.deliSize[r2_index],chromo.pickSize[r2_index] = reorderRoute(chromo.routes[r2_index])
+			mutated[i] = chromo
+			cost = mutated[i].getCost()
+			mutated[i].cost = cost
+			i+=1
+		else:
+			i+=1
+
 
 	return mutated
+
+#Funcion para determinar si una solucion es valida
+def isValid(sol):
+
+	global vehiculeCapacity
+	global demandList
+
+	valid = True
+	i = 0
+	for route in sol.routes:
+		demand = 0
+		for node in route[sol.deliSize[i]+1:]:
+			demand += demandList[node]
+		i+=1
+		valid = demand <= vehiculeCapacity
+		if not valid:
+			break
+	return valid
 
 
 
@@ -897,56 +935,87 @@ def geneticAlgor(pob_size):
 
 	poblation = []
 	tries = 0
-	MAX_TRIES = 100
+	MAX_TRIES = 2000
+
+	upper_Bound = soluciones[sys.argv[1]]
 	#Generamos la poblacion inicial
 	for i in range(1,pob_size):
 		poblation.append(getFirstSol())
 
+	#Aplicacion de algoritmo de seleccion(solo los mejores candidatos son aceptables)
 	poblation.sort(key=lambda x: x.cost)
+	poblation = poblation[0:(len(poblation)//2)]
 
 	best = poblation[0]
 
-	descendents = descendentsPob(poblation)
-	descendents.sort(key=lambda x: x.cost)
+	while True:
 
-	print(poblation[0].cost)
-	print(descendents[0].cost)
+		#Genera los nuevos hijos que seran parte de la poblacion
+		descendents = descendentsPob(poblation)
+		#Expandimos nuevamente la poblacion
+		poblation += descendents
+		#Generamos una mutacion aleatoria y probabilistica en la poblacion
+		poblation = mutate(poblation)
+		#Criterios de seleccion para la nueva poblacion
+		poblation.sort(key=lambda x: x.cost)
+		poblation = poblation[0:(len(poblation)//2)]
 
-	return
+		if (poblation[0].cost < best.cost and isValid(poblation[0]) and upper_Bound < poblation[0].cost):
 
-	'''while True:
-
-		#Creamos la poblacion de descendentes
-		poblation = decendentsPob(poblation)
-		#Mutamos dicha poblacion
-		#poblation = mutate(poblation)
-		#Seleccionamos el mejor candidato de esa nueva poblacion
-		candidate = bestInPoblation(poblation)
-		if (candidate.getCost() < best.getCost()):
-			best = candidate
-			print(best.getCost())
+			best = poblation[0]
 			tries = 0
+
 		else:
 			tries += 1
 			if tries == MAX_TRIES:
-				return best
-		print(tries)'''
+				break
 
+		if upper_Bound > poblation[0].cost:
+			break
 
+		else:
+			pass
 
-
-
+	return best
 
 def main():
-    instance  = "dataset/%s.xml" % (sys.argv[1])
-    parser(instance)
-    getCostMatrix()
-    geneticAlgor(10)
-    '''sils = ILS(s0)
-    print("Solucion ILS")
-    for route in sils.routes:
-        print("Ruta: %s" % route)
-    print("Costo: %s" % sils.getCost())'''
+
+	instance  = "dataset/%s.xml" % (sys.argv[1])
+	bestKnown = soluciones[sys.argv[1]]
+	parser(instance)
+	getCostMatrix()
+
+	ils_sols = []
+	ils_time = []
+	ils_errs = []
+	gen_sols = []
+	gen_time = []
+	gen_errs = []
+
+	for i in range(0,1):
+
+		t_start = time()
+		ilSol = ILS()
+		t_end = time()
+		ils_sols.append(round(ilSol.getCost(),1))
+		ils_time.append(t_end - t_start)
+		error = ((bestKnown - ilSol.getCost())/bestKnown)*100
+		ils_errs.append(abs(round(error,2)))
+		print(ils_sols)
+		print(ils_time)
+		print(ils_errs)
+
+		t_start = time()
+		geSol = geneticAlgor(100)
+		t_end = time()
+		gen_sols.append(geSol.cost)
+		gen_time.append(t_end - t_start)
+		error = ((bestKnown - geSol.cost)/bestKnown)*100
+		gen_errs.append(abs(round(error,2)))
+		print(gen_sols)
+		print(gen_time)
+		print(gen_errs)
+
 
 
 if __name__ == "__main__":
