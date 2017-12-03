@@ -578,6 +578,12 @@ def ILS():
 			tries +=1
 			if (tries == MAX_TRIES):
 				return bestSol
+##############################################################################################################################################
+
+#----------------------------------------------------------INICIO DE SECCION DE METAHEURISTICAS POBLACIONALES -------------------------------#
+
+##############################################################################################################################################
+
 
 #Funcion para transformar un conjunto de rutas en una ruta generalizada
 def getSingleArray(sol):
@@ -826,7 +832,7 @@ def crossover(father,mother):
 
 	return descendent
 
-
+#Funcion para obtener decendientes generados a traves de una poblacion
 def descendentsPob(poblation):
 
 	pob_size = len(poblation)
@@ -929,7 +935,7 @@ def isValid(sol):
 			break
 	return valid
 
-
+#META HEURISTICA DEL ALGORITMO GENETICO
 
 def geneticAlgor(pob_size):
 
@@ -978,7 +984,174 @@ def geneticAlgor(pob_size):
 
 	return best
 
+#Funcion para crear el contador de feromonas para cada posicion de la solucion en cuestion
+
+#Funcion para reorganizar las hormigas en su mejor posicion
+def antsBestPosition(sol):
+
+	return localSearch(sol,5)
+
+
+def createFeromoneCounter():
+
+	global deliveryNodes
+	global pickUpNodes
+
+	totalNodes = [0]+deliveryNodes+pickUpNodes
+
+	#es una lista de la forma [[0,0],[1,0],[2,0]...] donde el segundo elemento de cada tupla sigifica
+	#la cantidad de veces que aparece el nodo (cuyo ID es el primer elemento de la tupla) en la posicon
+	#actual en la que estemos revisando la solucion
+	feromone_list = [0]*len(totalNodes)
+
+	for i in range(0,len(feromone_list)):
+		feromone_list[i] = [i,0]
+
+	return feromone_list
+
+#Funcion para obtener el costo de soluciones en forma de arreglo lineal
+def getLinealCost(sol):
+
+	global costMatrix
+
+	cost = 0
+
+	for i in range(0,len(sol)-1):
+
+		orig = sol[i]
+		dest = sol[i+1]
+		cost += costMatrix[orig][dest]
+
+	return [sol,cost]
+
+#FUncion que se encarga de actualizar la cuenta de ocurrencias para cada posicion de la solucion
+def actFeromoneCount(route,fer_count):
+
+	#route es una solucion de la forma [0,1,2,3,0,6,7,8,19,11,0,..........,0]
+	NODE = 0
+	OCCURS = 1
+	#fer cout es una lista del mismo tamano que la solucion en donde cada posicion de fer count
+	#es una lista para cada posicion de la solucion en donde se almacenan las ocurrencias de todos
+	#los nodos para esa posicion, de tal manera que se dese saber cual es la que tiene maor probabilidad
+	#para ser asignada en el camino
+	for i in range(1,len(route)-1):
+		#Obtenemos el identiicador presente en la posicion actual de la ruta
+		nodeId = route[i]
+		fer_index = 0
+		#Para la lista de ocurrencias de esa posicion, buscamos la que tiene como identificador el NODEID
+		#y le sumamos 1 a sus ocurrencias
+		for tuplet in fer_count[i]:
+			if tuplet[NODE] == nodeId:
+				tuplet[OCCURS] += 1
+				fer_count[i][fer_index] = tuplet
+				break
+			fer_index += 1
+
+	return fer_count
+
+def createRouteFromFeromone(fer_count):
+
+	global vehicules
+	#Cantida de 0 internos que puede tener nuestra tupla
+	routes = vehicules - 2
+	NODE = 0
+	#Fer_count tiene la misma longitu q una solucion, por lo que la solucion generada, sera e la misma logitud
+	#de Fer_count
+	sol_size = len(fer_count)
+	sol = []
+
+	for i in range(1,sol_size-1):
+
+		for tuplet in fer_count[i]:
+
+			if tuplet[NODE] != 0:
+
+				if not(tuplet[NODE] in sol):
+					sol.append(tuplet[NODE])
+					break
+
+			else:
+
+				pass
+
+	sol = getLinealCost(sol)
+
+	return sol
+
+#Algoritmo colonia de hormigas (paths_size es la cantidad de rutas q hacen las hormigas para esparcir las feromonas)
+def antColony(paths_size):
+
+	PATH = 0
+	COST = 1
+	OCCURS = 1
+	best = 0
+	tries = 0
+	MAX_TRIES = 8
+
+	while True:
+
+		sols = []
+		for i in range(0,paths_size):
+			sols.append(getFirstSol())
+			sols[i] = antsBestPosition(sols[i])
+			sols[i] = getLinealCost(getSingleArray(sols[i]))
+
+		#seleccionamos las mejores rutas iniciales para lograr un poco la optimizacion
+		sols = sorted(sols,key=lambda x: x[COST])
+		sols = sols[0:len(sols)//2]
+
+		#Inicializamos nuestra mejor solucion
+		if best == 0:
+			best = sols[0]
+		if sols[0][COST] < best[COST]:
+			best = sols[0]
+
+
+
+		#todas las soluciones tienen la misma longitud, por lo que la cadena de feromonas para cada posicion del arreglo,sera
+		#del tamano que tenga cualquier solucion (por conveniencia se escoje la primera)
+		chain_size = len(sols[0][PATH])
+
+		#Es la lista de listas de feromonas que llevara cada posicion de nuestra solucion final
+		#Si la solucion es por ejemplo [0,1,3,4,0,7,5,28,0,11,12,13,14,15,0,20,0] cada posicion desde ID 1 hasta ID 20
+		#tendra su ocurrencias de feromonas gracias a feromone_occur[indice_de_la_posicion]
+		feromone_occur = []
+		#La posicion inicial y final de nuestra solucion no debe tener cadena de feromonas puesto que son posiciones
+		#inmutables
+		for i in range(0,chain_size):
+			if i == 0 or (i == chain_size-1):
+				feromone_occur.append([])
+			else:
+				feromone_occur.append(createFeromoneCounter())
+
+		#Para cada solucion, procedemos a actualizar la linea de feromonas para cada posicion de la ruta
+		for sol in sols:
+			feromone_occur = actFeromoneCount(sol[PATH],feromone_occur)
+
+		#Organizamos la lista de tuplas de cada posicion para determinar cuales obtuvieron mayor recurrencia en las feromonas
+		i = 0
+		for tupleList in feromone_occur:
+			feromone_occur[i] = sorted(feromone_occur[i],key=lambda x: x[OCCURS],reverse=True)
+			i+=1
+
+		#Generamos el mejor camino posible creado por el rastro de feromonas
+		candidate = createRouteFromFeromone(feromone_occur)
+		
+		if candidate[COST] < best[COST]:
+			best = candidate
+			tries = 0
+
+		else:
+
+			tries += 1
+			if(tries == MAX_TRIES):
+				break
+
+	return best
+
+
 def main():
+
 
 	instance    = "dataset/%s.xml" % (sys.argv[1])
 	bestKnown   = soluciones[sys.argv[1]]
@@ -992,6 +1165,9 @@ def main():
 	gen_sols = []
 	gen_time = []
 	gen_errs = []
+	ant_sols = []
+	ant_time = []
+	ant_errs = []
 
 	for i in range(0,1):
 
@@ -1010,6 +1186,16 @@ def main():
 		gen_time.append(t_end - t_start)
 		error = ((bestKnown - geSol.cost)/bestKnown)*100
 		gen_errs.append(abs(round(error,2)))
+
+		t_start = time()
+		atSol = antColony(10)
+		t_end = time()
+		ant_sols.append(atSol[1])
+		ant_time.append(t_end - t_start)
+		error = ((bestKnown - atSol[1])/bestKnown)*100
+		ant_errs.append(abs(round(error,2)))
+
+
 
 	ils_sols.sort(key=lambda x: x)
 	best_ils = round(ils_sols[0],2)
@@ -1037,6 +1223,19 @@ def main():
 		prom_egen += e
 	prom_egen = round(prom_egen/len(gen_errs),2)
 
+	ant_sols.sort(key=lambda x: x)
+	best_ant = round(ant_sols[0],2)
+
+	prom_tant = 0.0
+	for t in ant_time:
+		prom_tant += t
+	prom_tant = round(prom_tant/len(ant_time),2)
+
+	prom_eant = 0.0
+	for e in ant_errs:
+		prom_eant += e
+	prom_eant = round(prom_eant/len(ant_errs),2)
+
 	if printOption == 1:
 
 		print("Instancia: %s" % (sys.argv[1]))
@@ -1050,6 +1249,10 @@ def main():
 		print("Mejor Genetio:   %s" % best_gen)
 		print("Tiempo Promedio: %s segs" % prom_tgen)
 		print("Error Promedio:  %s" % prom_egen)
+		print()
+		print("Mejor Colonia:   %s" % best_ant)
+		print("Tiempo Promedio: %s segs" % prom_tant)
+		print("Error Promedio:  %s" % prom_eant)
 
 	elif printOption == 2:
 
@@ -1063,7 +1266,7 @@ def main():
 
 	else:
 
-		print("%s,%s,%s,%s,%s,%s,%s" % (bestKnown,best_ils,prom_tils,prom_eils,best_gen,prom_tgen,prom_egen))
+		print("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % (bestKnown,best_ils,prom_tils,prom_eils,best_gen,prom_tgen,prom_egen,best_ant,prom_tant,prom_eant))
 
 
 
